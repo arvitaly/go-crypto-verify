@@ -6,10 +6,10 @@ var secret = `ruiyh684i7ug87\4ruiyh684i7ug87\4`
 
 func TestCreate(t *testing.T) {
 	var startStr = "2317083"
-	var sourceHash = "f39675ac2cbc33c4fedc838343b2cb75abdb6d2c"
-	str := Create(startStr, sourceHash, secret)
 
-	dest, hash, _ := Parse(str, secret)
+	sourceHash, code := Create(startStr, secret)
+
+	dest, hash, _ := Parse(code, secret)
 	if dest != startStr {
 		t.Error("Invalid create or parse")
 	}
