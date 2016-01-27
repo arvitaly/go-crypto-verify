@@ -2,6 +2,6 @@ language: go
 go:
   - 1.5
 script:
-  - go get
-  - go install
-  - go test
+    - go get
+    - go install
+    - go test
