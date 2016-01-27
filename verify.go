@@ -14,6 +14,9 @@ import (
 	"time"
 )
 
+func CreateHash() string {
+	return sha1get(randomString(20))
+}
 func Create(str string, hash string, secret string) string {
 	return url.QueryEscape(base64.StdEncoding.EncodeToString([]byte(encode(leftPad2Len(str, "~", 16), secret)))) + "." + sha1get(hash+secret)
 }
