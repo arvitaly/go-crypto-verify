@@ -14,10 +14,12 @@ import (
 	"time"
 )
 
-func Create(str string, secret string, hash string) string {
+func Create(str string, hash string, secret string) string {
 	return url.QueryEscape(base64.StdEncoding.EncodeToString([]byte(encode(leftPad2Len(str, "~", 16), secret)))) + "." + sha1get(hash+secret)
 }
-
+func CheckHash(rHash string, hash string, secret string) bool {
+	return sha1get(hash+secret) == rHash
+}
 func Parse(code string, secret string) (id string, keyHash string, err error) {
 	var hash = code[len(code)-40:]
 	var crypt = code[:len(code)-41]

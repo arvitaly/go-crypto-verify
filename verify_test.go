@@ -7,13 +7,13 @@ var secret = `ruiyh684i7ug87\4ruiyh684i7ug87\4`
 func TestCreate(t *testing.T) {
 	var startStr = "2317083"
 	var sourceHash = "f39675ac2cbc33c4fedc838343b2cb75abdb6d2c"
-	str := Create(startStr, secret, sourceHash)
+	str := Create(startStr, sourceHash, secret)
 
 	dest, hash, _ := Parse(str, secret)
 	if dest != startStr {
 		t.Error("Invalid create or parse")
 	}
-	if hash != sha1get(sourceHash+secret) {
+	if !CheckHash(hash, sourceHash, secret) {
 		t.Error("Invalid source hash")
 	}
 }
