@@ -7,9 +7,9 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"encoding/hex"
+	"errors"
 	"io"
 	"math/rand"
-	"net/url"
 	"strings"
 	"time"
 )
@@ -18,20 +18,20 @@ func CreateHash() string {
 	return sha1get(randomString(20))
 }
 func Create(str string, hash string, secret string) string {
-	return url.QueryEscape(base64.StdEncoding.EncodeToString([]byte(encode(leftPad2Len(str, "~", 16), secret)))) + "." + sha1get(hash+secret)
+	return base64.URLEncoding.EncodeToString([]byte(encode(leftPad2Len(str, "~", 16), secret))) + "." + sha1get(hash+secret)
 }
 func CheckHash(rHash string, hash string, secret string) bool {
 	return sha1get(hash+secret) == rHash
 }
 func Parse(code string, secret string) (id string, keyHash string, err error) {
-	var hash = code[len(code)-40:]
-	var crypt = code[:len(code)-41]
-	b2, err := url.QueryUnescape(crypt)
-	if err != nil {
+	if len(code) < 50 {
+		err = errors.New("Invalid code")
 		return
 	}
+	var hash = code[len(code)-40:]
+	var crypt = code[:len(code)-41]
 
-	b, err := base64.StdEncoding.DecodeString(b2)
+	b, err := base64.URLEncoding.DecodeString(crypt)
 	if err != nil {
 		return
 	}
